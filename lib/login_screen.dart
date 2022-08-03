@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:signup_test/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,6 +11,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -29,7 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Scaffold(
           body: Form(
-            autovalidateMode: AutovalidateMode.always,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -76,7 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.pushNamed(context, '/mobileLayout');
+                      }
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 50),
