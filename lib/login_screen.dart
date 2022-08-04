@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:signup_test/server_handler.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -77,9 +78,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20,
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, '/mobileLayout');
+                        if (await ServerHandler().checkLogin(
+                            usernameController.text, passwordController.text)) {
+                          Navigator.pushNamed(context, '/mobileLayout');
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text('Credentials doesn\'t matchs'),
+                                  ));
+                        }
                       }
                     },
                     child: Container(
@@ -114,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           'Sign Up',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      )
+                      ),
                     ],
                   )
                 ],
